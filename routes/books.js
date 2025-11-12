@@ -8,7 +8,7 @@ router.get('/search',function(req, res, next){
 
 router.get('/search-result', function (req, res, next) {
      //searching in the database
-    let sqlquery = "SELECT * FROM books WHERE name = '" + req.query.search_text + "'"; // query database to get all books with keyword name
+    let sqlquery = "SELECT * FROM books WHERE name LIKE '%" + req.query.search_text + "%'"; // query database to get all books with name that contains the keyword using "like"
     console.log(sqlquery)
     // execute sql query
     db.query(sqlquery, (err, result) => {
