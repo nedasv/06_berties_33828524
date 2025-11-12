@@ -40,6 +40,18 @@ router.post('/bookadded', function (req, res, next) {
     })
 }) 
 
+router.get('/bargainbooks',function(req, res, next){
+    // Query the database to get books priced lessed than 20
+     let sqlquery = "SELECT * FROM books WHERE price < 20";
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+        if (err) {
+            next(err)
+        }
+        res.render("bargainbooks.ejs", {availableBooks: result})
+    });
+});
+
 
 
 // Export the router object so index.js can access it
