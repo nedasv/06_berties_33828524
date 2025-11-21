@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%=shopData.shopName%></title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1>Here are all the login attemtps:</h1>
+    <ul>
+        <% logins.forEach(attempt => { %>
+            <% if(attempt.successful == 1){ %>
+                <li>Successful login for <%= attempt.username %> using password <%= attempt.password %></li>
+            <% } else{ %>  
+                <li>Failed login for <%= attempt.username %> using password <%= attempt.password %></li>
+            <% } %>
+        <% }) %>    
+    </ul>
+  </body>
+</html>

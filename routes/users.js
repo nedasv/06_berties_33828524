@@ -8,6 +8,50 @@ router.get('/register', function (req, res, next) {
     res.render('register.ejs')
 })
 
+router.get('/login', function (req, res, next) {
+    res.render('login.ejs')
+})
+
+router.post('/loggedin', function (req, res, next) {
+    let sqlquery = "SELECT password_hash FROM users WHERE username='" + req.body.username + "'"; // query database to get all the books
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+        if (err) {
+            next(err)
+        }
+    
+        // Compare the password supplied with the password in the database
+        if (result[0] !== undefined) {
+             bcrypt.compare(req.body.password, result[0].password_hash, function(err, result) {
+            if (err) {
+                res.send(err.message)
+            }
+            else if (result == true) {
+                res.send("Logged in")
+                let sqlquery = "INSERT INTO audit (username, password, successful) VALUES (?,?,?)"
+                db.query(sqlquery, [req.body.username, req.body.password, 1])
+            }
+            else {
+                res.send("Incorrect password")
+                let sqlquery = "INSERT INTO audit (username, password, successful) VALUES (?,?,?)"
+                db.query(sqlquery, [req.body.username, req.body.password, 0])
+            }
+            })
+        }
+    });
+})
+
+router.get('/audit', function (req, res, next) {
+    let sqlquery = "SELECT * FROM audit"; // query database to get all the audit logs
+    // execute sql query
+    db.query(sqlquery, (err, result) => {
+        if (err) {
+            next(err)
+        }
+        res.render("audit.ejs", {logins: result})
+    });
+})
+
 router.post('/registered', function (req, res, next) {
     // saving data in database
     const plainPassword = req.body.password
@@ -28,7 +72,7 @@ router.post('/registered', function (req, res, next) {
 }); 
 
 router.get('/list', function (req, res, next) {
-    let sqlquery = "SELECT username, first_name, last_name, email FROM users"; // query database to get all the books
+    let sqlquery = "SELECT username, first_name, last_name, email FROM users"; // query database to get all the users
     // execute sql query
     db.query(sqlquery, (err, result) => {
         if (err) {

@@ -13,6 +13,14 @@ This is a web app for managing a bookshop. You can view, add, and manage books w
 - **MySQL** for the database
 - **CSS** for styling
 
+## Dotenv
+
+Dotenv was implemented by creating a .env file with database credentials and using the dotenv package with require('dotenv').config() to load those values into process.env to use for the MySQL connection.
+
+## Audit
+
+Audit was implemented by creating a new table with 'username' 'password' 'successful' as columns, if an attempt was successful the successful column would be equal to one, then every login attempt a new record is inserted into the table and then can be displayed.
+
 ## Getting Started
 
 ### 1. Install Dependencies
