@@ -4,6 +4,14 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId ) {
+      res.redirect('./login') // redirect to the login page
+    } else { 
+        next (); // move to the next middleware function
+    } 
+}
+
 router.get('/register', function (req, res, next) {
     res.render('register.ejs')
 })
@@ -27,6 +35,9 @@ router.post('/loggedin', function (req, res, next) {
                 res.send(err.message)
             }
             else if (result == true) {
+                // Save user session here, when login is successful
+                req.session.userId = req.body.username;
+
                 res.send("Logged in")
                 let sqlquery = "INSERT INTO audit (username, password, successful) VALUES (?,?,?)"
                 db.query(sqlquery, [req.body.username, req.body.password, 1])
@@ -41,7 +52,16 @@ router.post('/loggedin', function (req, res, next) {
     });
 })
 
-router.get('/audit', function (req, res, next) {
+router.get('/logout', redirectLogin, (req,res) => {
+        req.session.destroy(err => {
+        if (err) {
+          return res.redirect('./')
+        }
+        res.send('you are now logged out. <a href='+'./'+'>Home</a>');
+    })
+})
+
+router.get('/audit', redirectLogin, function (req, res, next) {
     let sqlquery = "SELECT * FROM audit"; // query database to get all the audit logs
     // execute sql query
     db.query(sqlquery, (err, result) => {
@@ -71,7 +91,7 @@ router.post('/registered', function (req, res, next) {
     })                                                                          
 }); 
 
-router.get('/list', function (req, res, next) {
+router.get('/list', redirectLogin, function (req, res, next) {
     let sqlquery = "SELECT username, first_name, last_name, email FROM users"; // query database to get all the users
     // execute sql query
     db.query(sqlquery, (err, result) => {

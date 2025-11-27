@@ -21,6 +21,10 @@ Dotenv was implemented by creating a .env file with database credentials and usi
 
 Audit was implemented by creating a new table with 'username' 'password' 'successful' as columns, if an attempt was successful the successful column would be equal to one, then every login attempt a new record is inserted into the table and then can be displayed.
 
+## Access control
+
+Added access control to audit and add book so only logged in users can do that.
+
 ## Getting Started
 
 ### 1. Install Dependencies
