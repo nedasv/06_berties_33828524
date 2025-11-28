@@ -29,6 +29,10 @@ Added access control to audit and add book so only logged in users can do that.
 
 Added validation to search result to check for empty fields, added a length limit to name and to check if not empty and price to be above 0, and also to added to check if username or password is not empty for login page, these were the only necessary forms that needed validation.
 
+## Where sanitization was added
+
+Added in book name, and search queries and also in last name and username as these were the most important to protect.
+
 ## Getting Started
 
 ### 1. Install Dependencies

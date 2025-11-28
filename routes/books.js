@@ -24,7 +24,7 @@ router.get('/search-result', [check('search_text').notEmpty()], function (req, r
     }
     else {
         //searching in the database
-        let sqlquery = "SELECT * FROM books WHERE name LIKE '%" + req.query.search_text + "%'"; // query database to get all books with name that contains the keyword using "like"
+        let sqlquery = "SELECT * FROM books WHERE name LIKE '%" + req.sanitize(req.query.search_text) + "%'"; // query database to get all books with name that contains the keyword using "like"
         console.log(sqlquery)
         // execute sql query
         db.query(sqlquery, (err, result) => {
