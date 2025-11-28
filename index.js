@@ -3,6 +3,7 @@ var express = require ('express')
 var ejs = require('ejs')
 const path = require('path')
 var session = require ('express-session')
+const expressSanitizer = require('express-sanitizer');
 
 // Set up .env file
 require('dotenv').config();
@@ -32,6 +33,9 @@ app.use(session({
         expires: 600000
     }
 }))
+
+// Create an input sanitizer
+app.use(expressSanitizer());
 
 // Define our application-specific data
 app.locals.shopData = {shopName: "Bertie's Books"}

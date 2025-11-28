@@ -29,7 +29,7 @@ router.post('/loggedin', [check('username').notEmpty(), check('password').notEmp
         res.render('login.ejs')
     }
     else {
-        let sqlquery = "SELECT password_hash FROM users WHERE username='" + req.body.username + "'"; // query database to get all the books
+        let sqlquery = "SELECT password_hash FROM users WHERE username='" + req.sanitize(req.body.username) + "'"; // query database to get all the books
     // execute sql query
     db.query(sqlquery, (err, result) => {
         if (err) {
@@ -44,16 +44,16 @@ router.post('/loggedin', [check('username').notEmpty(), check('password').notEmp
             }
             else if (result == true) {
                 // Save user session here, when login is successful
-                req.session.userId = req.body.username;
+                req.session.userId = req.sanitize(req.body.username);
 
                 res.send("Logged in")
                 let sqlquery = "INSERT INTO audit (username, password, successful) VALUES (?,?,?)"
-                db.query(sqlquery, [req.body.username, req.body.password, 1])
+                db.query(sqlquery, [req.sanitize(req.body.username), req.body.password, 1])
             }
             else {
                 res.send("Incorrect password")
                 let sqlquery = "INSERT INTO audit (username, password, successful) VALUES (?,?,?)"
-                db.query(sqlquery, [req.body.username, req.body.password, 0])
+                db.query(sqlquery, [req.sanitize(req.body.username), req.body.password, 0])
             }
             })
         }
@@ -95,13 +95,13 @@ router.post('/registered',
             // Store hashed password in your database.
             let sqlquery = "INSERT INTO users (username, first_name, last_name, email, password_hash) VALUES (?,?,?,?,?)"
             // execute sql query
-            let newrecord = [req.body.username, req.body.first, req.body.last, req.body.email, hashedPassword]
+            let newrecord = [req.sanitize(req.body.username), req.sanitize(req.body.first), req.sanitize(req.body.last), req.body.email, hashedPassword]
             db.query(sqlquery, newrecord, (err, result) => {
                 if (err) {
                     next(err)
                 }
                 else
-                    result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email + 'Your password is: '+ req.body.password +' and your hashed password is: '+ hashedPassword
+                    result = 'Hello '+ req.sanitize(req.body.first) + ' '+ req.sanitize(req.body.last) +' you are now registered!  We will send an email to you at ' + req.body.email + 'Your password is: '+ req.body.password +' and your hashed password is: '+ hashedPassword
                     res.send(result)
             })
         })         
