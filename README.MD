@@ -25,6 +25,10 @@ Audit was implemented by creating a new table with 'username' 'password' 'succes
 
 Added access control to audit and add book so only logged in users can do that.
 
+## Where validation was added
+
+Added validation to search result to check for empty fields, added a length limit to name and to check if not empty and price to be above 0, and also to added to check if username or password is not empty for login page, these were the only necessary forms that needed validation.
+
 ## Getting Started
 
 ### 1. Install Dependencies
