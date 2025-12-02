@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%=shopData.shopName%>'s Weather</title>
+    <link rel="stylesheet"  type="text/css" href="/main.css" />
+  </head>
+  <body>
+    <h1>Get current weather</h1>
+    <form action="weather/now" method="GET">
+      <p>Which city?</p>
+      <input id="weather-search-box" type="text" name="weather_text">
+      <input type="submit" value="Search">
+    </form>
+  </body>
+</html>
