@@ -33,6 +33,32 @@ Added validation to search result to check for empty fields, added a length limi
 
 Added in book name, and search queries and also in last name and username as these were the most important to protect.
 
+## API Documentation
+
+The search API can be accessed via this route, any book can be searched by changing WORD to desired search.
+
+Example:
+http://localhost:8000/api/books?search=WORD
+
+Minimum and maximum price paramters are also available "minprice" and "max_price".
+
+Example:
+http://localhost:8000/api/books?minprice=5&max_price=10
+
+Sorting can be done by providing a sort parameter, the valid options are name and price.
+
+Examples:
+http://localhost:8000/api/books?sort=name
+http://localhost:8000/api/books?sort=price
+
+order asc desc
+
+An additional "order" parameter can be provided to return ascending or descening data using "order=asc"
+
+Examples:
+http://localhost:8000/api/books?sort=price&order=asc
+http://localhost:8000/api/books?sort=price&order=desc
+
 ## Getting Started
 
 ### 1. Install Dependencies
